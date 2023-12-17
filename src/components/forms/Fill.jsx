@@ -19,6 +19,7 @@ const Fill = () => {
         try{
             const data=await axios.get(`https://super-assi.onrender.com/v1/getForm/${id}`);
             console.log(data);setQ(data.data);
+            
         }catch(err){
             console.log(err);
         }
@@ -29,7 +30,7 @@ const Fill = () => {
     if(ques==null){return <div className='text-center'>Loading...</div>}
     const handleClick=async()=>{
         setL(true);
-        if(name==""){setL(false);alert("Enter your Name");}
+        if(name==""){setL(false);alert("Enter your Name");return;}
         const formdata=new FormData();
         formdata.append('name',name);
         formdata.append('form_id',id);
@@ -83,7 +84,7 @@ const Fill = () => {
             {ques?.category.map((ele,index)=>{
                 return <div key={index} className='bg-yellow-300 shadow-2xl p-10 rounded-xl'>
                     <h1>{index+1}.</h1>
-                    <Cat data={ele} ans={ansCat} setCat={setCat} />
+                    <Cat data={ele} ans={ansCat} indd={index} setCat={setCat} />
                 </div>
             })}
         </div>
@@ -95,7 +96,7 @@ const Fill = () => {
             {ques?.cloze.map((ele,index)=>{
                 return <div key={index} className='bg-yellow-300 shadow-2xl p-10 rounded-xl'>
                     <h1>{index+1}.</h1>
-                    <Clo data={ele} ans={ansCloze} setCloze={setCloze}/>
+                    <Clo data={ele} ans={ansCloze} indd={index} setCloze={setCloze}/>
                 </div>
             })}
         </div>
@@ -107,7 +108,7 @@ const Fill = () => {
             {ques?.comprehension.map((ele,index)=>{
                 return <div key={index} className='bg-yellow-300 shadow-2xl p-10 rounded-xl'>
                     <h1>{index+1}.</h1>
-                    <Comp data={ele} ans={ansComp} setComp={setComp}/>
+                    <Comp data={ele} ans={ansComp} indd={index} setComp={setComp}/>
                 </div>
             })}
         </div>

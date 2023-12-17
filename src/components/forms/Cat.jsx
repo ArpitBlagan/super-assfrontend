@@ -1,24 +1,26 @@
-import React, { useEffect,useRef } from 'react'
+import React, { useEffect,useRef,useState } from 'react'
 
-const Cat = ({data,ans,setCat}) => {
+const Cat = ({data,ans,indd,setCat}) => {
   const dragEnd=useRef(null);
   const dragStart=useRef(null);
   const change=()=>{
     const arr=[...ans];
-    arr[dragStart.current.index].name=dragEnd.current.value;
-    setCat(arr);
+    arr[indd][dragStart.current.index].name=dragEnd.current.value;
+    setCat(arr);console.log(ans);
   }
   useEffect(()=>{
+    setCat([...ans,[]]);
     const arr=[...ans];
-    setCat(arr);
+    const val=[]
     data.values.map((ele,index)=>{
       const obj={
         name:"values",
         ele:ele.key
       }
-      arr.push(obj);
-    })
-    setCat(arr);
+      val.push(obj);
+    });console.log("val",val);
+    arr[indd]=val;
+    setCat(arr);console.log("ans",arr);
   },[]);
   return (
     <div className='p-4 shadow-xl'>
@@ -28,7 +30,7 @@ const Cat = ({data,ans,setCat}) => {
             onDragEnd={()=>{change()}}
             onDragOver={(e)=>{e.preventDefault()}}
       >
-        {ans.map((ele,index)=>{
+        {ans.length>indd&&ans[indd].map((ele,index)=>{
           if(ele.name=="values"){
           return <div key={index} className='bg-violet-700 m-2 p-3 cursor-pointer'
                 draggable
@@ -49,7 +51,7 @@ const Cat = ({data,ans,setCat}) => {
                   onDragOver={(e)=>{e.preventDefault()}}
            >
                 <h1>{ele}</h1>
-                {ans.map((e,ind)=>{
+                {ans.length>indd&&ans[indd].map((e,ind)=>{
                   if(e.name==ele){
                   return <h1 className='font-heading top-0 p-2 bg-violet-400' key={ind}
                     draggable
